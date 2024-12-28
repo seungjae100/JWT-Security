@@ -13,7 +13,7 @@ const AuthService = {
 
     async register(email, password, name) {
         try {
-            const data = await ApiService.post('/auth/register', {email, password});
+            const data = await ApiService.post('/auth/register', {email, password, name});
             TokenService.setAccessToken(data.accessToken());
             TokenService.setUserInfo(data.email, data.name);
             return data;
