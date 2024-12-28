@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>홈 화면</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>JWT 인증</h1>
+            <div class="user-info" id="userInfo" style="display: none;">
+                <span id="userName"></span>님 반갑습니다.
+                <button onclick="handleLogout()" class="logout-btn">로그아웃</button>
+            </div>
+            <div class="auth-buttons" id="authButtons">
+                <button onClick="location.href='login.html'" class="login-btn">로그인</button>
+                <button onClick="location.href='register.html'" class="register-btn">회원가입</button>
+            </div>
+        </header>
+        <main class="main-content">
+            <div id="authenticatedContent" style="display: none;">
+                <!-- 인증된 사용자만 볼 수 있는 컨텐츠 -->
+                <h2>인증된 사용자 컨텐츠</h2>
+                <p>이 영역은 로그인한 사용자만 볼 수 있습니다.</p>
+            </div>
+            <div id="publicContent">
+                <!-- 공개 컨텐츠 -->
+                <h2>공개 컨텐츠</h2>
+                <p>이 영역은 모든 사용자가 볼 수 있습니다.</p>
+            </div>
+        </main>
+    </div>
+    <script src="../js/tokenService.js"></script>
+    <script src="../js/apiService.js"></script>
+    <script src="../js/authService.js"></script>
+    <script src="../js/index.js"></script>
+</body>
+</html>
