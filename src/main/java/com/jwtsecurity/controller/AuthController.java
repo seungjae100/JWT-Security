@@ -5,8 +5,10 @@ import com.jwtsecurity.dto.request.RegisterRequest;
 import com.jwtsecurity.dto.response.AuthResponse;
 import com.jwtsecurity.dto.response.ErrorResponse;
 import com.jwtsecurity.dto.response.SuccessResponse;
+import com.jwtsecurity.jwt.JwtService;
 import com.jwtsecurity.security.user.CustomUserDetails;
 import com.jwtsecurity.service.AuthService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
+    private final JwtService jwtService;
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
@@ -47,9 +50,19 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        authService.logout(userDetails.getUsername());
-        return ResponseEntity.ok()
-                .body(new SuccessResponse("로그아웃이 되었습니다."));
+    public ResponseEntity<?> logout(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String accessToken = authHeader.substring(7);
+            String username = jwtService.extractUsername(accessToken);
+
+            // RefreshToken을 DB에서 삭제
+            authService.logout(username);
+
+            return ResponseEntity.ok()
+                    .body(new SuccessResponse("로그아웃이 되었습니다."));
+        }
+        return ResponseEntity.badRequest()
+                .body(new ErrorResponse("유효하지 않은 토큰입니다."));
     }
 }

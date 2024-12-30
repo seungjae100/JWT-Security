@@ -13,7 +13,7 @@
             <h1>JWT 인증</h1>
             <div class="user-info" id="userInfo" style="display: none;">
                 <span id="userName"></span>님 반갑습니다.
-                <button onclick="handleLogout()" class="logout-btn">로그아웃</button>
+                <button id="logoutButton" onclick="handleLogout()" class="logout-btn">로그아웃</button>
             </div>
             <div class="auth-buttons" id="authButtons">
                 <button onClick="location.href='login.html'" class="login-btn">로그인</button>
@@ -35,7 +35,7 @@
     </div>
     <script src="../js/tokenService.js"></script>
     <script src="../js/apiService.js"></script>
-    <script src="../js/authService.js"></script>
+    <script src="../js/auth.js"></script>
     <script src="../js/index.js"></script>
 </body>
 </html>
