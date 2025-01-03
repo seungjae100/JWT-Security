@@ -42,6 +42,7 @@ public class CookieUtil {
         cookie.setMaxAge(0);                           // 즉시 만료되도록 설정
         response.addCookie(cookie);                    // 응답에 쿠키 추가
     }
+    // test
 
 
 }

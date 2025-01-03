@@ -65,6 +65,7 @@ public class AuthController {
                 authService.logout(username);
 
                 // 쿠키 삭제
+
                 cookieUtil.clearCookies(request, response);
 
                 return ResponseEntity.ok(new SuccessResponse("로그아웃이 완료되었습니다."));
