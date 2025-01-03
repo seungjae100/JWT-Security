@@ -10,6 +10,7 @@ const ApiService = {
         const response = await fetch(`${API_URL}${endpoint}`, {
             method: 'POST',
             headers: defaultHeaders,
+            credentials: 'include',
             body: JSON.stringify(data)
         });
 

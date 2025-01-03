@@ -40,10 +40,14 @@ public class AuthService {
         userRepository.save(user);
 
         CustomUserDetails userDetails = new CustomUserDetails(user);
+        // AccessToken 생성
         String accessToken = jwtService.generateToken(userDetails);
+        // Refresh Token 생성 및 저장
+        String refreshToken = jwtService.generateRefreshToken(userDetails);
 
         return AuthResponse.builder()
                 .accessToken(accessToken)
+                .refreshToken(refreshToken)
                 .email(user.getEmail())
                 .name(user.getName())
                 .build();
@@ -61,16 +65,27 @@ public class AuthService {
                 .orElseThrow(() -> new UsernameNotFoundException("유저를 찾을 수 없습니다."));
 
         CustomUserDetails userDetails = new CustomUserDetails(user);
+
+        // AccessToken 생성
         String accessToken = jwtService.generateToken(userDetails);
+
+        // Refresh Token 생성 및 저장
+        String refreshToken = jwtService.generateRefreshToken(userDetails);
 
         return AuthResponse.builder()
                 .accessToken(accessToken)
+                .refreshToken(refreshToken)
                 .email(user.getEmail())
                 .name(user.getName())
                 .build();
     }
     @Transactional
     public void logout(String username) {
-        refreshTokenRepository.deleteByUsername(username);
+        try {
+            // deleteByUsername을 호출하여 직접 삭제
+            refreshTokenRepository.deleteByUsername(username);
+        } catch (Exception e) {
+            throw new RuntimeException("로그아웃 처리 중 오류가 발생했습니다.");
+        }
     }
 }

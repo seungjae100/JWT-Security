@@ -10,8 +10,7 @@ function checkAuthStatus() {
 
     if (token) {
         // 로그인 상태
-        const userName = sessionStorage.getItem('userName');
-        document.getElementById('userName').textContent = userName;
+        document.getElementById('userName').textContent = '사용자';
         userInfo.style.display = 'flex';
         authButtons.style.display = 'none';
         authenticatedContent.style.display = 'block';
@@ -28,6 +27,7 @@ async function handleLogout() {
         await AuthService.logout();
         window.location.reload();
     } catch (error) {
+        console.error('로그아웃 중 오류:', error.message);
         alert('로그아웃 중 오류가 발생했습니다.');
     }
 }

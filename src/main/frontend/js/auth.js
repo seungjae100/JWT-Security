@@ -3,11 +3,9 @@ const AuthService = {
         try {
             const data = await ApiService.post('/auth/login', {email, password});
             TokenService.setAccessToken(data.accessToken);
-            TokenService.setUserInfo(data.email, data.name);
             return data;
         } catch (error) {
-            console.error('로그인 에러: ', error);
-            throw error;
+            throw new Error('로그인에 실패했습니다.');
         }
     },
 
@@ -15,11 +13,9 @@ const AuthService = {
         try {
             const data = await ApiService.post('/auth/register', {email, password, name});
             TokenService.setAccessToken(data.accessToken);
-            TokenService.setUserInfo(data.email, data.name);
             return data;
         } catch (error) {
-            console.error('회원가입 에러: ', error);
-            throw error;
+            throw new Error('회원가입에 실패했습니다.');
         }
     },
 
@@ -27,7 +23,8 @@ const AuthService = {
         try {
             const token = TokenService.getAccessToken();
             if (!token) {
-                throw new Error('로그인 상태가 아닙니다.');
+                console.warn('로그인 상태가 아닙니다.');
+                return;
             }
 
             await ApiService.post('/auth/logout', {}, {
@@ -35,10 +32,8 @@ const AuthService = {
             });
             
             TokenService.removeAccessToken();
-            TokenService.removeUserInfo();
         } catch (error) {
-            console.error('로그아웃 에러: ', error);
-            throw error;
+            console.error('로그아웃 요청 중 오류: ', error.message);
         }
     }
 };
@@ -73,8 +68,9 @@ document.getElementById('registerForm')?.addEventListener('submit', async (e) =>
 document.getElementById('logoutButton')?.addEventListener('click', async () => {
     try {
         await AuthService.logout();
-        window.location.href = '/';
+        window.location.href = 'index.html';
     } catch (error) {
+        console.error('로그아웃 중 오류:', error.message);
         alert(error.message);
     }
 });

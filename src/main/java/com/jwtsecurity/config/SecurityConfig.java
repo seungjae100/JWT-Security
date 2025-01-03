@@ -61,9 +61,14 @@ public class SecurityConfig {
         ));
         configuration.setAllowedHeaders(Arrays.asList(
                 "Authorization",
-                "Content-Type"
+                "Content-Type",
+                "Set-Cookie",
+                "Cookie"
         ));
-        configuration.setExposedHeaders(Arrays.asList("Authorization"));
+        configuration.setExposedHeaders(Arrays.asList(
+                "Authorization",
+                "Set-Cookie"
+        ));
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
